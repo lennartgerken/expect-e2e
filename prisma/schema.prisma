@@ -1,0 +1,31 @@
+enum TransactionStatus {
+  NEW
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Comment {
+  id            Int         @id @default(autoincrement())
+  content       String
+  transactionID Int
+  transaction   Transaction @relation(fields: [transactionID], references: [id])
+}
+
+model Transaction {
+  id       Int               @id @default(autoincrement())
+  title    String
+  data1    String?
+  status   TransactionStatus @default(NEW)
+  comments Comment[]
+}

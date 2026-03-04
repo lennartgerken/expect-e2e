@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@layer base {
+    h1 {
+        @apply text-3xl font-bold mb-4;
+    }
+
+    h2 {
+        @apply text-2xl font-bold mb-3;
+    }
+
+    form {
+        @apply max-w-lg;
+    }
+
+    label {
+        @apply block mb-2;
+    }
+
+    input {
+        @apply border border-gray-300 rounded p-2 mb-4 w-full;
+    }
+
+    input:disabled {
+        @apply bg-gray-200;
+    }
+
+    button {
+        @apply border border-gray-300 text-gray-600 rounded p-1 hover:bg-gray-50;
+    }
+}
