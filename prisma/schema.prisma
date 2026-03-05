@@ -6,6 +6,12 @@ enum TransactionStatus {
   CANCELLED
 }
 
+enum Data2 {
+  OPTION1
+  OPTION2
+  OPTION3
+}
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -26,6 +32,7 @@ model Transaction {
   id       Int               @id @default(autoincrement())
   title    String
   data1    String?
+  data2    Data2?
   status   TransactionStatus @default(NEW)
   comments Comment[]
 }
