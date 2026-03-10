@@ -4,7 +4,7 @@ import prisma from './prisma'
 import { redirect } from 'next/navigation'
 import { Role } from './users'
 import { revalidatePath } from 'next/cache'
-import { TransactionStatus } from '@/generated/prisma/enums'
+import { Data2, Data3, TransactionStatus } from '@/generated/prisma/enums'
 import { requireServerUser } from './auth'
 
 export type BaseState = {
@@ -15,6 +15,14 @@ export type BaseState = {
 export type CreateTransactionState = BaseState & {
     fieldErrors: {
         title?: string
+    }
+}
+
+export type UpdateTransactionState = BaseState & {
+    fieldErrors: {
+        data1?: string
+        data2?: string
+        data3?: string
     }
 }
 
@@ -40,10 +48,17 @@ export async function createTransaction(
             finishedAt: new Date().toISOString()
         }
 
-    const transaction = await prisma.transaction.create({
-        data: {
-            title: title as string
+    if (typeof title !== 'string') {
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { title: 'Title must be a string' },
+            finishedAt: new Date().toISOString()
         }
+    }
+
+    const transaction = await prisma.transaction.create({
+        data: { title }
     })
 
     redirect('/transactions/' + transaction.id)
@@ -51,13 +66,13 @@ export async function createTransaction(
 
 export async function updateTransaction(
     transactionID: number,
-    _prev: BaseState,
+    _prev: UpdateTransactionState,
     formData: FormData
-): Promise<BaseState> {
+): Promise<UpdateTransactionState> {
     const userCheck = await checkUser([Role.MANAGER, Role.USER])
-    if (userCheck.error) return userCheck.error
+    if (userCheck.error) return { ...userCheck.error, fieldErrors: {} }
     const transactionIDCheck = checkTransactionID(transactionID)
-    if (transactionIDCheck) return transactionIDCheck
+    if (transactionIDCheck) return { ...transactionIDCheck, fieldErrors: {} }
 
     const role = userCheck.user.role
     const allowedStatus =
@@ -65,16 +80,45 @@ export async function updateTransaction(
             ? [TransactionStatus.IN_PROGRESS, TransactionStatus.REVIEW]
             : [TransactionStatus.IN_PROGRESS]
 
-    const data1 = (formData.get('data1') || '') as string
+    const data1 = formData.get('data1')
+    if (data1 != null && typeof data1 !== 'string') {
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { data1: 'Data 1 must be a string' },
+            finishedAt: new Date().toISOString()
+        }
+    }
+
+    const data2Raw = formData.get('data2')
+    if (data2Raw != null && !Object.values(Data2).includes(data2Raw as Data2))
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { data2: 'Data 2 must be a valid value' },
+            finishedAt: new Date().toISOString()
+        }
+    const data2 = data2Raw as Data2 | null
+
+    const data3Raw = formData.get('data3')
+    if (data3Raw != null && !Object.values(Data3).includes(data3Raw as Data3))
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { data3: 'Data 3 must be a valid value' },
+            finishedAt: new Date().toISOString()
+        }
+    const data3 = data3Raw as Data3 | null
 
     await prisma.transaction.update({
         where: { id: transactionID, status: { in: allowedStatus } },
-        data: { data1: data1 }
+        data: { data1: data1, data2: data2, data3: data3 }
     })
 
     revalidatePath('/transactions/' + transactionID)
     return {
         formError: null,
+        fieldErrors: {},
         success: true,
         finishedAt: new Date().toISOString()
     }
@@ -253,14 +297,23 @@ export async function createComment(
     const transactionIDCheck = checkTransactionID(transactionID)
     if (transactionIDCheck) return { ...transactionIDCheck, fieldErrors: {} }
 
-    const content = formData.get('comment') as string
+    const content = formData.get('comment')
     if (!content)
         return {
             formError: null,
-            fieldErrors: { content: 'Comment content is required' },
             success: false,
+            fieldErrors: { content: 'Content is required' },
             finishedAt: new Date().toISOString()
         }
+
+    if (typeof content !== 'string') {
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { content: 'Content must be a string' },
+            finishedAt: new Date().toISOString()
+        }
+    }
 
     await prisma.comment.create({
         data: {
