@@ -47,6 +47,7 @@ export default async function Transaction({
                         transactionID={idNumber}
                         data1={transaction.data1}
                         data2={transaction.data2}
+                        data3={transaction.data3}
                         disabled={
                             transaction.status === TransactionStatus.NEW ||
                             transaction.status ===

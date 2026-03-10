@@ -4,12 +4,14 @@ export default function FormRadio({
     legend,
     name,
     options,
-    defaultValue
+    defaultValue,
+    error
 }: {
     legend: string
     name: string
     options: { value: string; label: string }[]
     defaultValue?: string
+    error?: string
 }) {
     const id = useId()
 
@@ -34,6 +36,7 @@ export default function FormRadio({
                     </div>
                 )
             })}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
         </fieldset>
     )
 }

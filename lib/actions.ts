@@ -4,7 +4,7 @@ import prisma from './prisma'
 import { redirect } from 'next/navigation'
 import { Role } from './users'
 import { revalidatePath } from 'next/cache'
-import { Data2, TransactionStatus } from '@/generated/prisma/enums'
+import { Data2, Data3, TransactionStatus } from '@/generated/prisma/enums'
 import { requireServerUser } from './auth'
 
 export type BaseState = {
@@ -22,6 +22,7 @@ export type UpdateTransactionState = BaseState & {
     fieldErrors: {
         data1?: string
         data2?: string
+        data3?: string
     }
 }
 
@@ -99,9 +100,19 @@ export async function updateTransaction(
         }
     const data2 = data2Raw as Data2 | null
 
+    const data3Raw = formData.get('data3')
+    if (data3Raw != null && !Object.values(Data3).includes(data3Raw as Data3))
+        return {
+            formError: null,
+            success: false,
+            fieldErrors: { data3: 'Data 3 must be a valid value' },
+            finishedAt: new Date().toISOString()
+        }
+    const data3 = data3Raw as Data3 | null
+
     await prisma.transaction.update({
         where: { id: transactionID, status: { in: allowedStatus } },
-        data: { data1: data1, data2: data2 }
+        data: { data1: data1, data2: data2, data3: data3 }
     })
 
     revalidatePath('/transactions/' + transactionID)

@@ -12,6 +12,12 @@ enum Data2 {
   OPTION3
 }
 
+enum Data3 {
+  SELECTION1
+  SELECTION2
+  SELECTION3
+}
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -33,6 +39,7 @@ model Transaction {
   title    String
   data1    String?
   data2    Data2?
+  data3    Data3?
   status   TransactionStatus @default(NEW)
   comments Comment[]
 }
