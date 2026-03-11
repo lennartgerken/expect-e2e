@@ -1,4 +1,5 @@
 import ButtonLink from '@/components/button-link'
+import { Status } from '@/components/status'
 import prisma from '@/lib/prisma'
 
 function Th({ children }: { children: React.ReactNode }) {
@@ -40,7 +41,9 @@ export default async function Transactions() {
                         <tr key={id}>
                             <Td>{id}</Td>
                             <Td>{title}</Td>
-                            <Td>{status}</Td>
+                            <Td>
+                                <Status status={status} />
+                            </Td>
                             <Td>
                                 <ButtonLink
                                     href={`/transactions/${id}`}
