@@ -18,6 +18,7 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@types/better-sqlite3": "^7.6.13",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
+    "eslint-plugin-playwright": "^2.9.0",
     "prettier": "^3.7.4",
     "prisma": "^7.4.0",
     "tailwindcss": "^4",
