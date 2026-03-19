@@ -27,7 +27,7 @@ export default async function Transactions() {
             <div className="mb-4">
                 <ButtonLink href="/transactions/new" title="New Transaction" />
             </div>
-            <table className="w-full">
+            <table data-testid="transactions-table" className="w-full">
                 <thead>
                     <tr>
                         <Th>ID</Th>
@@ -39,9 +39,9 @@ export default async function Transactions() {
                 <tbody>
                     {transactions.map(({ id, title, status }) => (
                         <tr key={id}>
-                            <Td>{id}</Td>
-                            <Td>{title}</Td>
-                            <Td>
+                            <Td data-testid="id">{id}</Td>
+                            <Td data-testid="title">{title}</Td>
+                            <Td data-testid="status">
                                 <Status status={status} />
                             </Td>
                             <Td>

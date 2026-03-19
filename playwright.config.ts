@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
-    testDir: './tests',
+    testDir: './test-demos/playwright/tests',
+    tsconfig: './test-demos/playwright/tsconfig.json',
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
@@ -9,7 +10,8 @@ export default defineConfig({
     reporter: 'html',
     use: {
         baseURL: 'http://localhost:3000',
-        trace: 'on-first-retry'
+        trace: 'on-first-retry',
+        actionTimeout: 5000
     },
     projects: [
         {
@@ -30,6 +32,6 @@ export default defineConfig({
     webServer: {
         command: 'npm run start',
         url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI
+        reuseExistingServer: false
     }
 })

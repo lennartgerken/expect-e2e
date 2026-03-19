@@ -13,7 +13,7 @@ export default async function Comments({
     const { role } = await requireServerUser()
 
     return (
-        <div>
+        <div data-testid="comments">
             <h2>Comments</h2>
             <ul className="mb-4">
                 {comments.map(({ id, content }) => (

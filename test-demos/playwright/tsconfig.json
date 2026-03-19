@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "paths": {
+            "@/*": ["./*"],
+            "@users": ["../../lib/users.ts"]
+        }
+    },
+    "include": ["../../lib/users.ts", "../../playwright.config.ts", "./**/*.ts"]
+}
