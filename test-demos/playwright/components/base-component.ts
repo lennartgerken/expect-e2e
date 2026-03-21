@@ -1,6 +1,6 @@
 import { Locator } from '@playwright/test'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unsafe-declaration-merging
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unsafe-declaration-merging, @typescript-eslint/consistent-type-definitions
 export interface BaseComponent extends Locator {}
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -20,5 +20,9 @@ export abstract class BaseComponent {
         })
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return proxy as any
+    }
+
+    toString() {
+        return this.baseLocator.toString()
     }
 }

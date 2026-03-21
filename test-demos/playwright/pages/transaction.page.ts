@@ -1,6 +1,7 @@
 import { Locator, Page } from '@playwright/test'
 import { BasePage } from './base-page'
 import { CommentsComponent } from '@/components/transaction/comments-component'
+import { DetailsComponent } from '@/components/transaction/details-component'
 
 export class TransactionPage extends BasePage {
     readonly statusDiv: Locator
@@ -10,6 +11,7 @@ export class TransactionPage extends BasePage {
     readonly cancelButton: Locator
     readonly returnButton: Locator
     readonly completeButton: Locator
+    readonly detailsComponent: DetailsComponent
     readonly commentsComponent: CommentsComponent
 
     constructor(page: Page) {
@@ -38,6 +40,11 @@ export class TransactionPage extends BasePage {
         this.completeButton = this.pageLocator
             .getByRole('button', { name: 'Complete' })
             .describe('Complete')
+        this.detailsComponent = new DetailsComponent(
+            this.pageLocator
+                .getByTestId('transaction-details')
+                .describe('Transaction Details')
+        )
         this.commentsComponent = new CommentsComponent(
             this.pageLocator.getByTestId('comments').describe('Comments')
         )

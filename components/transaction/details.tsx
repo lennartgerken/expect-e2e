@@ -42,7 +42,11 @@ export function Details({
         <div>
             <h2>Transaction Details</h2>
             <form action={formAction}>
-                <fieldset disabled={disabled} className="w-full">
+                <fieldset
+                    data-testid="transaction-details"
+                    disabled={disabled}
+                    className="w-full"
+                >
                     <FormInput
                         label="Data 1"
                         name="data1"

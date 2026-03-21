@@ -103,6 +103,9 @@ test.describe('Transaction Status', () => {
                     ).toBeHidden()
                     await expect(transactionPage.returnButton).toBeHidden()
                     await expect(transactionPage.completeButton).toBeHidden()
+                    await expect(
+                        transactionPage.detailsComponent
+                    ).toBeDisabledByAttribute()
                 })
             })
         })
@@ -209,6 +212,9 @@ test.describe('Transaction Status', () => {
                         await expect(
                             transactionPage.completeButton
                         ).toBeHidden()
+                        await expect(
+                            transactionPage.detailsComponent
+                        ).toBeDisabledByAttribute()
                     })
                 })
             })
@@ -287,6 +293,9 @@ test.describe('Transaction Status', () => {
                     await expect(transactionPage.cancelButton).toBeHidden()
                     await expect(transactionPage.returnButton).toBeHidden()
                     await expect(transactionPage.completeButton).toBeHidden()
+                    await expect(
+                        transactionPage.detailsComponent
+                    ).toBeDisabledByAttribute()
                 })
 
                 test.describe(() => {
@@ -317,6 +326,9 @@ test.describe('Transaction Status', () => {
                         await expect(
                             transactionPage.completeButton
                         ).toBeHidden()
+                        await expect(
+                            transactionPage.detailsComponent
+                        ).toBeDisabledByAttribute()
                     })
                 })
             })
@@ -376,6 +388,9 @@ test.describe('Transaction Status', () => {
                                 await expect(
                                     transactionPage.completeButton
                                 ).toBeHidden()
+                                await expect(
+                                    transactionPage.detailsComponent
+                                ).toBeDisabledByAttribute()
                             }
                         )
                     })
@@ -437,6 +452,9 @@ test.describe('Transaction Status', () => {
                                 await expect(
                                     transactionPage.completeButton
                                 ).toBeHidden()
+                                await expect(
+                                    transactionPage.detailsComponent
+                                ).toBeDisabledByAttribute()
                             }
                         )
                     })
