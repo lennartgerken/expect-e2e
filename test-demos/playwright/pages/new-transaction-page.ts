@@ -11,8 +11,8 @@ export class NewTransactionPage extends BasePage {
             'New Transaction'
         )
 
-        this.titleInput = page.getByLabel('Title').describe('Title')
-        this.createButton = page
+        this.titleInput = this.pageLocator.getByLabel('Title').describe('Title')
+        this.createButton = this.pageLocator
             .getByRole('button', { name: 'Create Transaction' })
             .describe('Create')
     }

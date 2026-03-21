@@ -11,4 +11,8 @@ export abstract class BasePage {
             .filter({ has: baseLocator })
             .describe(name)
     }
+
+    async waitFor() {
+        await this.pageLocator.waitFor()
+    }
 }

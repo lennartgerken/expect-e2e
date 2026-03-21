@@ -2,6 +2,8 @@ import ButtonLink from '@/components/button-link'
 import { Status } from '@/components/status'
 import prisma from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 function Th({ children }: { children: React.ReactNode }) {
     return (
         <th className="border-b border-gray-200 px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">
@@ -10,16 +12,27 @@ function Th({ children }: { children: React.ReactNode }) {
     )
 }
 
-function Td({ children }: { children: React.ReactNode }) {
+function Td({
+    testID,
+    children
+}: {
+    testID?: string
+    children: React.ReactNode
+}) {
     return (
-        <td className="border-b border-gray-200 px-4 py-2 text-sm text-gray-700">
+        <td
+            data-testid={testID}
+            className="border-b border-gray-200 px-4 py-2 text-sm text-gray-700"
+        >
             {children}
         </td>
     )
 }
 
 export default async function Transactions() {
-    const transactions = await prisma.transaction.findMany()
+    const transactions = await prisma.transaction.findMany({
+        orderBy: { id: 'desc' }
+    })
 
     return (
         <div>
@@ -39,9 +52,9 @@ export default async function Transactions() {
                 <tbody>
                     {transactions.map(({ id, title, status }) => (
                         <tr key={id}>
-                            <Td data-testid="id">{id}</Td>
-                            <Td data-testid="title">{title}</Td>
-                            <Td data-testid="status">
+                            <Td testID="id">{id}</Td>
+                            <Td testID="title">{title}</Td>
+                            <Td>
                                 <Status status={status} />
                             </Td>
                             <Td>

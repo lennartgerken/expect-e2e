@@ -4,6 +4,9 @@ export function Status({ status }: { status: TransactionStatus }) {
     let color = 'bg-gray-600'
     let text = status.toString()
     switch (status) {
+        case TransactionStatus.NEW:
+            text = 'New'
+            break
         case TransactionStatus.IN_PROGRESS:
             color = 'bg-yellow-500'
             text = 'In Progress'
@@ -23,7 +26,10 @@ export function Status({ status }: { status: TransactionStatus }) {
     }
 
     return (
-        <span className={color + ' text-white px-2 py-1 rounded text-sm'}>
+        <span
+            data-testid="status"
+            className={color + ' text-white px-2 py-1 rounded text-sm'}
+        >
             {text}
         </span>
     )

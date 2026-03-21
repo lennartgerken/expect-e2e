@@ -17,7 +17,22 @@ const eslintConfig = defineConfig([
     },
     {
         extends: [playwright.configs['flat/recommended']],
-        files: ['test-demos/playwright/**']
+        files: ['test-demos/playwright/**'],
+        rules: {
+            '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    ignoreRestSiblings: true
+                }
+            ]
+        }
     },
     globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
 ])

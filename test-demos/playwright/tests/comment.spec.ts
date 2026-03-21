@@ -2,7 +2,7 @@ import { expect } from '@/custom-expect'
 import { test } from '@/custom-test'
 
 test.describe('Comment', () => {
-    test('create comment', async ({ transactionPage }) => {
+    test('create', async ({ initTransactionPage: transactionPage }) => {
         const content = 'This is a comment.'
 
         await transactionPage.commentsComponent.addComment(content)

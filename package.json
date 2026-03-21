@@ -30,6 +30,7 @@
     "eslint-plugin-playwright": "^2.9.0",
     "prettier": "^3.7.4",
     "prisma": "^7.4.0",
+    "pseudo-fixture": "^1.1.1",
     "set-steps": "^0.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"

@@ -4,25 +4,32 @@ import { BaseComponent } from '../base-component'
 export class EntryComponent extends BaseComponent {
     readonly idTd: Locator
     readonly titleTd: Locator
-    readonly statusTd: Locator
-    readonly viewButton: Locator
+    readonly statusDiv: Locator
+    readonly viewA: Locator
 
     constructor(baseLocator: Locator) {
         super(baseLocator)
 
         this.idTd = baseLocator.getByTestId('id').describe('ID')
         this.titleTd = baseLocator.getByTestId('title').describe('Title')
-        this.statusTd = baseLocator.getByTestId('status').describe('Status')
-        this.viewButton = baseLocator
-            .getByRole('button', { name: 'View' })
+        this.statusDiv = baseLocator.getByTestId('status').describe('Status')
+        this.viewA = baseLocator
+            .getByRole('link', { name: 'View' })
             .describe('View')
     }
 }
 
 export class TableComponent extends BaseComponent {
-    getEntry() {
+    getEntry(title: string) {
         return new EntryComponent(
-            this.baseLocator.locator('tbody tr').first().describe('First Entry')
+            this.baseLocator
+                .getByRole('row')
+                .filter({
+                    has: this.page()
+                        .getByTestId('title')
+                        .filter({ hasText: title })
+                })
+                .describe(`Entry ${title}`)
         )
     }
 }
