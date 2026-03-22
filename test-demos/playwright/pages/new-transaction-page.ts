@@ -17,6 +17,10 @@ export class NewTransactionPage extends BasePage {
             .describe('Create')
     }
 
+    async goto() {
+        await this.page.goto('/transactions/new')
+    }
+
     async createTransaction(title: string) {
         await this.titleInput.fill(title)
         await this.createButton.click()

@@ -1,6 +1,8 @@
 import ButtonLink from '@/components/button-link'
 import { Status } from '@/components/status'
+import { requireServerUser } from '@/lib/auth'
 import prisma from '@/lib/prisma'
+import { Role } from '@/lib/users'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,11 +36,18 @@ export default async function Transactions() {
         orderBy: { id: 'desc' }
     })
 
+    const { role } = await requireServerUser()
+
     return (
         <div>
             <h1>Transactions</h1>
             <div className="mb-4">
-                <ButtonLink href="/transactions/new" title="New Transaction" />
+                {role !== Role.VIEWER && (
+                    <ButtonLink
+                        href="/transactions/new"
+                        title="New Transaction"
+                    />
+                )}
             </div>
             <table data-testid="transactions-table" className="w-full">
                 <thead>

@@ -46,8 +46,32 @@ export const test = baseTest.extend<CustomFixtures & CustomOptions>({
             new LogBrowser(browser, {
                 logs: {
                     locatorLogs: {
+                        check: (name) => `Check '${name}'.`,
                         click: (name) => `Click '${name}'.`,
-                        fill: (name, value) => `Fill '${name}' with '${value}'.`
+                        fill: (name, value) =>
+                            `Fill '${name}' with '${value}'.`,
+                        selectOption: (name, value) => {
+                            const formatOption = (option: unknown): string => {
+                                if (option && typeof option === 'object') {
+                                    const item = option as {
+                                        label?: unknown
+                                        value?: unknown
+                                    }
+                                    if (item.label !== undefined)
+                                        return String(item.label)
+                                    if (item.value !== undefined)
+                                        return String(item.value)
+                                    return JSON.stringify(option)
+                                }
+                                return String(option)
+                            }
+
+                            const formattedValue = Array.isArray(value)
+                                ? value.map(formatOption).join(', ')
+                                : formatOption(value)
+
+                            return `Select option '${formattedValue}' in '${name}'.`
+                        }
                     }
                 }
             })
@@ -102,9 +126,7 @@ export const test = baseTest.extend<CustomFixtures & CustomOptions>({
     ) => {
         const transactionPage = new TransactionPage(page)
         if (useExistingTransaction) {
-            await initTransactionsPage.table
-                .getEntry(transactionTitle)
-                .viewA.click()
+            await initTransactionsPage.table.getEntry(transactionTitle).open()
         } else {
             await initTransactionsPage.newTransactionA.click()
             await newTransactionPage.createTransaction(transactionTitle)

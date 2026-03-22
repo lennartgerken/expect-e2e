@@ -16,7 +16,7 @@ export default function FormRadio({
     const id = useId()
 
     return (
-        <fieldset data-testid={name} className="mb-4">
+        <fieldset className="mb-4">
             <legend>{legend}</legend>
             {options.map(({ value, label }) => {
                 const currentID = `${id}-${value}`

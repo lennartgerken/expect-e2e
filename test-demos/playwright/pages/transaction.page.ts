@@ -4,6 +4,7 @@ import { CommentsComponent } from '@/components/transaction/comments-component'
 import { DetailsComponent } from '@/components/transaction/details-component'
 
 export class TransactionPage extends BasePage {
+    readonly titleH1: Locator
     readonly statusDiv: Locator
     readonly backToOverviewA: Locator
     readonly startButton: Locator
@@ -19,6 +20,9 @@ export class TransactionPage extends BasePage {
             page.getByRole('heading', { name: 'Transaction Details' }),
             'Transaction'
         )
+        this.titleH1 = this.pageLocator
+            .getByTestId('transaction-title')
+            .describe('Title')
         this.statusDiv = this.pageLocator
             .getByTestId('status')
             .describe('Status')

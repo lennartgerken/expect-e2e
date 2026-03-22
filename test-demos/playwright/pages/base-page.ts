@@ -2,7 +2,7 @@ import { Locator, Page } from '@playwright/test'
 
 export abstract class BasePage {
     protected page: Page
-    protected pageLocator: Locator
+    readonly pageLocator: Locator
 
     constructor(baseLocator: Locator, name: string) {
         this.page = baseLocator.page()

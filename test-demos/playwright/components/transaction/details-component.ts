@@ -16,7 +16,7 @@ export class DetailsComponent extends BaseComponent {
         this.fieldset = this.locator('fieldset').first().describe('Fieldset')
         this.data1Input = this.getByLabel('Data 1').describe('Data 1')
         this.data2Radio = new RadioComponent(
-            this.getByTestId('Data 2').describe('Data 2')
+            this.getByRole('group', { name: 'Data 2' }).describe('Data 2')
         )
         this.data3Select = this.getByLabel('Data 3').describe('Data 3')
         this.successMessageP = this.getByText(

@@ -17,6 +17,10 @@ export class EntryComponent extends BaseComponent {
             .getByRole('link', { name: 'View' })
             .describe('View')
     }
+
+    async open() {
+        await this.viewA.click()
+    }
 }
 
 export class TableComponent extends BaseComponent {

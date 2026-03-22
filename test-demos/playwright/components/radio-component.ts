@@ -1,3 +1,4 @@
+import test from '@playwright/test'
 import { BaseComponent } from './base-component'
 
 export class RadioComponent extends BaseComponent {
@@ -8,6 +9,8 @@ export class RadioComponent extends BaseComponent {
     }
 
     async setOption(label: string) {
-        await this.getOption(label).check()
+        await test.step(`Set option '${label}' in '${this}'`, async () => {
+            await this.getOption(label).check()
+        })
     }
 }
