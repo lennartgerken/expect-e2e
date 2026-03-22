@@ -1,5 +1,7 @@
 import { expect } from '@/custom-expect'
 import { test } from '@/custom-test'
+import { TransactionPage } from '@/pages/transaction.page'
+import { TransactionsPage } from '@/pages/transactions-page'
 import { users } from '@/users'
 
 enum StatusLabel {
@@ -17,11 +19,12 @@ test.describe('Transaction Status', () => {
             initTransactionsPage: transactionsPage,
             initTransactionPage: transactionPage
         }) => {
-            await expect(transactionPage.statusDiv).toHaveText(StatusLabel.NEW)
-            await transactionPage.backToOverviewA.click()
-            await expect(
-                transactionsPage.table.getEntry(transactionTitle).statusDiv
-            ).toHaveText(StatusLabel.NEW)
+            await expectStatusToShow(
+                StatusLabel.NEW,
+                transactionPage,
+                transactionsPage,
+                transactionTitle
+            )
         })
 
         test.describe('change status by role', () => {
@@ -65,6 +68,9 @@ test.describe('Transaction Status', () => {
                 await expect(transactionPage.requestReviewButton).toBeHidden()
                 await expect(transactionPage.returnButton).toBeHidden()
                 await expect(transactionPage.completeButton).toBeHidden()
+                await expect(
+                    transactionPage.detailsComponent.fieldset
+                ).toBeDisabledByAttribute()
             })
 
             test.describe(() => {
@@ -78,6 +84,9 @@ test.describe('Transaction Status', () => {
                     ).toBeHidden()
                     await expect(transactionPage.returnButton).toBeHidden()
                     await expect(transactionPage.completeButton).toBeHidden()
+                    await expect(
+                        transactionPage.detailsComponent.fieldset
+                    ).toBeDisabledByAttribute()
                 })
             })
 
@@ -104,7 +113,7 @@ test.describe('Transaction Status', () => {
                     await expect(transactionPage.returnButton).toBeHidden()
                     await expect(transactionPage.completeButton).toBeHidden()
                     await expect(
-                        transactionPage.detailsComponent
+                        transactionPage.detailsComponent.fieldset
                     ).toBeDisabledByAttribute()
                 })
             })
@@ -129,13 +138,30 @@ test.describe('Transaction Status', () => {
                 initTransactionsPage: transactionsPage,
                 initTransactionPage: transactionPage
             }) => {
-                await expect(transactionPage.statusDiv).toHaveText(
-                    StatusLabel.IN_PROGRESS
+                await expectStatusToShow(
+                    StatusLabel.IN_PROGRESS,
+                    transactionPage,
+                    transactionsPage,
+                    transactionTitle
                 )
-                await transactionPage.backToOverviewA.click()
-                await expect(
-                    transactionsPage.table.getEntry(transactionTitle).statusDiv
-                ).toHaveText(StatusLabel.IN_PROGRESS)
+            })
+
+            test.describe('edit details by role', () => {
+                test('user', async ({
+                    initTransactionPage: transactionPage
+                }) => {
+                    await expectDetailsToBeEditable(transactionPage)
+                })
+
+                test.describe(() => {
+                    test.use({ user: users.manager })
+
+                    test('manager', async ({
+                        initTransactionPage: transactionPage
+                    }) => {
+                        await expectDetailsToBeEditable(transactionPage)
+                    })
+                })
             })
 
             test.describe('change status by role', () => {
@@ -213,7 +239,7 @@ test.describe('Transaction Status', () => {
                             transactionPage.completeButton
                         ).toBeHidden()
                         await expect(
-                            transactionPage.detailsComponent
+                            transactionPage.detailsComponent.fieldset
                         ).toBeDisabledByAttribute()
                     })
                 })
@@ -240,13 +266,24 @@ test.describe('Transaction Status', () => {
                 initTransactionsPage: transactionsPage,
                 initTransactionPage: transactionPage
             }) => {
-                await expect(transactionPage.statusDiv).toHaveText(
-                    StatusLabel.REVIEW
+                await expectStatusToShow(
+                    StatusLabel.REVIEW,
+                    transactionPage,
+                    transactionsPage,
+                    transactionTitle
                 )
-                await transactionPage.backToOverviewA.click()
-                await expect(
-                    transactionsPage.table.getEntry(transactionTitle).statusDiv
-                ).toHaveText(StatusLabel.REVIEW)
+            })
+
+            test.describe('edit details by role', () => {
+                test.describe(() => {
+                    test.use({ user: users.manager })
+
+                    test('manager', async ({
+                        initTransactionPage: transactionPage
+                    }) => {
+                        await expectDetailsToBeEditable(transactionPage)
+                    })
+                })
             })
 
             test.describe('change status by role', () => {
@@ -294,7 +331,7 @@ test.describe('Transaction Status', () => {
                     await expect(transactionPage.returnButton).toBeHidden()
                     await expect(transactionPage.completeButton).toBeHidden()
                     await expect(
-                        transactionPage.detailsComponent
+                        transactionPage.detailsComponent.fieldset
                     ).toBeDisabledByAttribute()
                 })
 
@@ -327,7 +364,7 @@ test.describe('Transaction Status', () => {
                             transactionPage.completeButton
                         ).toBeHidden()
                         await expect(
-                            transactionPage.detailsComponent
+                            transactionPage.detailsComponent.fieldset
                         ).toBeDisabledByAttribute()
                     })
                 })
@@ -354,13 +391,12 @@ test.describe('Transaction Status', () => {
                 initTransactionsPage: transactionsPage,
                 initTransactionPage: transactionPage
             }) => {
-                await expect(transactionPage.statusDiv).toHaveText(
-                    StatusLabel.COMPLETED
+                await expectStatusToShow(
+                    StatusLabel.COMPLETED,
+                    transactionPage,
+                    transactionsPage,
+                    transactionTitle
                 )
-                await transactionPage.backToOverviewA.click()
-                await expect(
-                    transactionsPage.table.getEntry(transactionTitle).statusDiv
-                ).toHaveText(StatusLabel.COMPLETED)
             })
 
             test.describe('disable actions by role', () => {
@@ -389,7 +425,7 @@ test.describe('Transaction Status', () => {
                                     transactionPage.completeButton
                                 ).toBeHidden()
                                 await expect(
-                                    transactionPage.detailsComponent
+                                    transactionPage.detailsComponent.fieldset
                                 ).toBeDisabledByAttribute()
                             }
                         )
@@ -418,13 +454,12 @@ test.describe('Transaction Status', () => {
                 initTransactionsPage: transactionsPage,
                 initTransactionPage: transactionPage
             }) => {
-                await expect(transactionPage.statusDiv).toHaveText(
-                    StatusLabel.CANCELLED
+                await expectStatusToShow(
+                    StatusLabel.CANCELLED,
+                    transactionPage,
+                    transactionsPage,
+                    transactionTitle
                 )
-                await transactionPage.backToOverviewA.click()
-                await expect(
-                    transactionsPage.table.getEntry(transactionTitle).statusDiv
-                ).toHaveText(StatusLabel.CANCELLED)
             })
 
             test.describe('disable actions by role', () => {
@@ -453,7 +488,7 @@ test.describe('Transaction Status', () => {
                                     transactionPage.completeButton
                                 ).toBeHidden()
                                 await expect(
-                                    transactionPage.detailsComponent
+                                    transactionPage.detailsComponent.fieldset
                                 ).toBeDisabledByAttribute()
                             }
                         )
@@ -463,3 +498,22 @@ test.describe('Transaction Status', () => {
         })
     })
 })
+
+async function expectStatusToShow(
+    status: StatusLabel,
+    transactionPage: TransactionPage,
+    transactionsPage: TransactionsPage,
+    transactionTitle: string
+) {
+    await expect(transactionPage.statusDiv).toHaveText(status)
+    await transactionPage.backToOverviewA.click()
+    await expect(
+        transactionsPage.table.getEntry(transactionTitle).statusDiv
+    ).toHaveText(status)
+}
+
+async function expectDetailsToBeEditable(transactionPage: TransactionPage) {
+    await transactionPage.detailsComponent.data1Input.fill('New Data 1')
+    await transactionPage.detailsComponent.saveButton.click()
+    await expect(transactionPage.detailsComponent.successMessageP).toBeVisible()
+}

@@ -39,14 +39,10 @@ export function Details({
     } satisfies Record<Data3, string>
 
     return (
-        <div>
+        <div data-testid="transaction-details">
             <h2>Transaction Details</h2>
             <form action={formAction}>
-                <fieldset
-                    data-testid="transaction-details"
-                    disabled={disabled}
-                    className="w-full"
-                >
+                <fieldset disabled={disabled} className="w-full">
                     <FormInput
                         label="Data 1"
                         name="data1"

@@ -19,6 +19,18 @@ const eslintConfig = defineConfig([
         extends: [playwright.configs['flat/recommended']],
         files: ['test-demos/playwright/**'],
         rules: {
+            'playwright/expect-expect': [
+                'error',
+                {
+                    assertFunctionNames: [
+                        'expect',
+                        'expect.soft',
+                        'expect.poll',
+                        'expectDetailsToBeEditable',
+                        'expectStatusToShow'
+                    ]
+                }
+            ],
             '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
             '@typescript-eslint/no-unused-vars': [
                 'error',
@@ -34,7 +46,14 @@ const eslintConfig = defineConfig([
             ]
         }
     },
-    globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts'])
+    globalIgnores([
+        '.next/**',
+        'out/**',
+        'build/**',
+        'next-env.d.ts',
+        'playwright-report/**',
+        'test-results/**'
+    ])
 ])
 
 export default eslintConfig
