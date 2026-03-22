@@ -7,6 +7,17 @@ import { revalidatePath } from 'next/cache'
 import { Data2, Data3, TransactionStatus } from '@/generated/prisma/enums'
 import { requireServerUser } from './auth'
 
+function getNullableEnumValue<T extends string>(
+    value: FormDataEntryValue | null,
+    validValues: readonly T[]
+): T | null {
+    if (value == null || value === '') return null
+    if (typeof value !== 'string')
+        throw new Error('Enum value must be a string')
+    if (!validValues.includes(value as T)) throw new Error('Invalid enum value')
+    return value as T
+}
+
 export type BaseState = {
     formError: string | null
     success: boolean
@@ -80,8 +91,8 @@ export async function updateTransaction(
             ? [TransactionStatus.IN_PROGRESS, TransactionStatus.REVIEW]
             : [TransactionStatus.IN_PROGRESS]
 
-    const data1 = formData.get('data1')
-    if (data1 != null && typeof data1 !== 'string') {
+    const data1Raw = formData.get('data1')
+    if (data1Raw != null && typeof data1Raw !== 'string') {
         return {
             formError: null,
             success: false,
@@ -89,26 +100,33 @@ export async function updateTransaction(
             finishedAt: new Date().toISOString()
         }
     }
+    const data1 = data1Raw === '' ? null : (data1Raw as string | null)
 
     const data2Raw = formData.get('data2')
-    if (data2Raw != null && !Object.values(Data2).includes(data2Raw as Data2))
+    let data2: Data2 | null
+    try {
+        data2 = getNullableEnumValue(data2Raw, Object.values(Data2))
+    } catch {
         return {
             formError: null,
             success: false,
             fieldErrors: { data2: 'Data 2 must be a valid value' },
             finishedAt: new Date().toISOString()
         }
-    const data2 = data2Raw as Data2 | null
+    }
 
     const data3Raw = formData.get('data3')
-    if (data3Raw != null && !Object.values(Data3).includes(data3Raw as Data3))
+    let data3: Data3 | null
+    try {
+        data3 = getNullableEnumValue(data3Raw, Object.values(Data3))
+    } catch {
         return {
             formError: null,
             success: false,
             fieldErrors: { data3: 'Data 3 must be a valid value' },
             finishedAt: new Date().toISOString()
         }
-    const data3 = data3Raw as Data3 | null
+    }
 
     await prisma.transaction.update({
         where: { id: transactionID, status: { in: allowedStatus } },

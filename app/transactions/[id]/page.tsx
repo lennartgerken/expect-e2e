@@ -31,7 +31,9 @@ export default async function Transaction({
         <div>
             <div className="flex gap-2 items-center mb-4">
                 <span className="text-sm text-gray-700">{transaction.id}</span>
-                <h1 className="mb-0">{transaction.title}</h1>
+                <h1 data-testid="transaction-title" className="mb-0">
+                    {transaction.title}
+                </h1>
                 <Status status={transaction.status} />
             </div>
             <div className="mb-4 flex justify-between items-center">

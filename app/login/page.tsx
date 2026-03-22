@@ -2,7 +2,16 @@
 
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
-import { useId, useState } from 'react'
+import { Suspense, useId, useState } from 'react'
+
+function LoginError() {
+    const error = useSearchParams().get('error')
+    return error === 'CredentialsSignin' ? (
+        <div className="bg-red-800 mb-4 p-2 text-white">
+            Username or password incorrect.
+        </div>
+    ) : null
+}
 
 export default function LoginPage() {
     const usernameID = useId()
@@ -10,8 +19,6 @@ export default function LoginPage() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const error = useSearchParams().get('error')
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -27,11 +34,9 @@ export default function LoginPage() {
             <div className="max-w-md border border-gray-300 rounded p-4">
                 <h1>Login</h1>
                 <form className="" onSubmit={handleSubmit}>
-                    {error === 'CredentialsSignin' && (
-                        <div className="bg-red-800 mb-4 p-2 text-white">
-                            Username or password incorrect.
-                        </div>
-                    )}
+                    <Suspense>
+                        <LoginError />
+                    </Suspense>
                     <label htmlFor={usernameID}>Username</label>
                     <input
                         name="username"

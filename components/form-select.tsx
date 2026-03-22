@@ -11,7 +11,7 @@ export default function FormSelect({
     label: string
     name: string
     options: { value: string; label: string }[]
-    defaultValue: string
+    defaultValue: string | null
     error?: string
 }) {
     const id = useId()
@@ -21,7 +21,7 @@ export default function FormSelect({
             <select
                 id={id}
                 name={name}
-                defaultValue={defaultValue}
+                defaultValue={defaultValue ?? ''}
                 className="border border-gray-300 rounded p-2 mb-4 w-full disabled:bg-gray-200"
             >
                 <option value="">-- Select an option --</option>
